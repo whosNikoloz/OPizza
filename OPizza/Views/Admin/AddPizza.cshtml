@@ -1,0 +1,188 @@
+﻿@model Pizza
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+    <link rel="stylesheet" href="/css/adminaddV2.css">
+</head>
+<form method="post" enctype="multipart/form-data">
+    <div class="admin-panel">
+        <h2>დაამატე Pizza</h2>
+        <form>
+            <div class="form-group">
+                <label for="pizza-img">პიცის ფოტო</label>
+                <input type="file" name="image" id="image" style="width: 300px" accept="image/*" onchange="previewImage(event)">
+                <img id="preview" src="" alt="Preview" style="width: 300px" />
+                <span id="image-error" style="color: red;"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="pizza-name">პიცის სახელი</label>
+                <input type="text" name="PizzaName" id="PizzaName" required style="width: 300px;">
+            </div>
+            <div class="form-group">
+                <label for="pizza-price">პიცის ფასი</label>
+                <input type="text" name="FinalPrice" id="FinalPrice" required style="width: 100px;">
+            </div>
+            <div class="form-group">
+                <label for="cheese">ყველის ტიპი:</label>
+                <select id="cheese" name="cheese" style="width: 200px;">
+                    <option value="none">არა</option>
+                    <option value="cheddar">Cheddar</option>
+                    <option value="mozzarella">Mozzarella</option>
+                    <option value="swiss">Swiss</option>
+                    <option value="gouda">Gouda</option>
+                    <option value="blue">Blue Cheese</option>
+                    <option value="parmesan">Parmesan</option>
+                    <option value="provolone">Provolone</option>
+                    <option value="burrata">Burrata</option>
+                    <option value="sulguni">sulguni</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pizza-description">აღწერა</label>
+                <textarea name="Description" id="Description" required style="width: 340px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Toppings</label><br>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="TomatoSauce" id="topping1" class="checkbox">
+                    <label for="topping1" class="checkmark"></label>
+                    <span class="checkbox-text">ტომატის სოუსი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Ham" id="topping2" class="checkbox">
+                    <label for="topping2" class="checkmark"></label>
+                    <span class="checkbox-text">ლორი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Pepperoni" id="topping3" class="checkbox">
+                    <label for="topping3" class="checkmark"></label>
+                    <span class="checkbox-text">პეპერონი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Mushrooms" id="topping4" class="checkbox">
+                    <label for="topping4" class="checkmark"></label>
+                    <span class="checkbox-text">სოკო</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Olives" id="topping5" class="checkbox">
+                    <label for="topping5" class="checkmark"></label>
+                    <span class="checkbox-text">ზეთისხილი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Bacon" id="topping6" class="checkbox">
+                    <label for="topping6" class="checkmark"></label>
+                    <span class="checkbox-text">ბეკონი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Onions" id="topping7" class="checkbox">
+                    <label for="topping7" class="checkmark"></label>
+                    <span class="checkbox-text">ხახვი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="GreenPeppers" id="topping8" class="checkbox">
+                    <label for="topping8" class="checkmark"></label>
+                    <span class="checkbox-text">Მწვანე წიწაკა</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Pineapple" id="topping9" class="checkbox">
+                    <label for="topping9" class="checkmark"></label>
+                    <span class="checkbox-text">ანანასი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Anchovies" id="topping10" class="checkbox">
+                    <label for="topping10" class="checkmark"></label>
+                    <span class="checkbox-text">ანჩოუსები</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Jalapenos" id="topping11" class="checkbox">
+                    <label for="topping11" class="checkmark"></label>
+                    <span class="checkbox-text">ჯალაპენოსი</span>
+                </div>
+            </div>
+            <button class="add-pizza-button">დამატება</button>
+        </form>
+    </div>
+</form>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        var imageInput = document.getElementById('image');
+        var previewImage = document.getElementById('preview');
+        var imageError = document.getElementById('image-error');
+        var isValid = true;
+
+        if (!imageInput.files || !imageInput.files[0]) {
+            isValid = false;
+            imageError.textContent = 'Please select an image.';
+        } else {
+            imageError.textContent = '';
+            // You can perform additional validation here if needed
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevents form submission
+        }
+    });
+
+
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        var inputs = this.querySelectorAll('input[required]');
+        var isValid = true;
+
+        for (var i = 0; i < inputs.length; i++) {
+            if (!inputs[i].value) {
+                isValid = false;
+                inputs[i].classList.add('error');
+            } else {
+                inputs[i].classList.remove('error');
+            }
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevents form submission
+            alert('Please fill in all the required fields.');
+        }
+    });
+
+
+
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById('preview');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            preview.src = '#';
+        }
+
+    }
+</script>
+
+
+
+
+
+
+<script>
+
+    function updateCheeseType() {
+        const inputElement = document.getElementById("CheeseType");
+        const checkboxElement = document.getElementById("CheeseTypeCheckbox");
+
+        if (checkboxElement.checked) {
+            inputElement.value = ""; // or some other default value
+        } else if (!inputElement.value) {
+            inputElement.value = "არა";
+        }
+    }
+</script>

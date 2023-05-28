@@ -1,0 +1,91 @@
+﻿@model OrderModel
+
+@{
+    Layout = "_Layout";
+}
+<html lang="en" dir="ltr">
+<head>
+    <link rel="stylesheet" href="/css/checkout.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+</head>
+<body>
+
+    <div class="pizza-card" style="margin-bottom:200px;margin-top:50px;">
+        <div class="pizza-image">
+            <img src="/images/CustomPizza.png" />
+        </div>
+        <div class="pizza-details">
+            <h5 class="pizza-title">@Model.PizzaName</h5>
+            <ul class="pizza-ingredients">
+                @if (Model.TomatoSauce)
+                {
+                    <li>ტომატის სოუსი: კი</li>
+                }
+                @if (Model.Ham)
+                {
+                    <li>ლორი: კი</li>
+                }
+                @if (Model.Pepperoni)
+                {
+                    <li>პეპერონი: კი</li>
+                }
+                @if (Model.Mushrooms)
+                {
+                    <li>სოკო: კი</li>
+                }
+                @if (Model.Olives)
+                {
+                    <li>ზეთისხილი: კი</li>
+                }
+                <li>ყველი: @Model.CheeseType.ToString()</li>
+                @if (Model.Bacon)
+                {
+                    <li>ბეკონი: კი</li>
+                }
+                @if (Model.Onions)
+                {
+                    <li>ხახვი: კი</li>
+                }
+                @if (Model.GreenPeppers)
+                {
+                    <li>Მწვანე წიწაკა: კი</li>
+                }
+                @if (Model.Pineapple)
+                {
+                    <li>ანანასი: კი</li>
+                }
+                @if (Model.Jalapenos)
+                {
+                    <li>ჯალაპენოსი: კი</li>
+                }
+                @if (Model.Anchovies)
+                {
+                    <li>ანჩოუსები: კი</li>
+                }
+            </ul>
+            <p class="final-price">Საბოლოო ფასი: @Model.FinalPrice ₾</p>
+            <form action="/Order/Custom" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="hidden" name="PizzaName" value="@Model.PizzaName" />
+                <input type="hidden" name="FinalPrice" value="@Model.FinalPrice" />
+                <input type="hidden" name="TomatoSauce" value="@(Model.TomatoSauce ? "true" : "false")" />
+                <input type="hidden" name="Ham" value="@(Model.Ham ? "true" : "false")" />
+                <input type="hidden" name="Pepperoni" value="@(Model.Pepperoni ? "true" : "false")" />
+                <input type="hidden" name="Mushrooms" value="@(Model.Mushrooms ? "true" : "false")" />
+                <input type="hidden" name="Olives" value="@(Model.Olives ? "true" : "false")" />
+                <input type="hidden" name="CheeseType" value="@Model.CheeseType" />
+                <input type="hidden" name="Bacon" value="@(Model.Bacon ? "true" : "false")" />
+                <input type="hidden" name="Onions" value="@(Model.Onions ? "true" : "false")" />
+                <input type="hidden" name="GreenPeppers" value="@(Model.GreenPeppers ? "true" : "false")" />
+                <input type="hidden" name="Pineapple" value="@(Model.Pineapple ? "true" : "false")" />
+                <input type="hidden" name="Jalapenos" value="@(Model.Jalapenos ? "true" : "false")" />
+                <input type="hidden" name="Anchovies" value="@(Model.Anchovies ? "true" : "false")" />
+
+                <button type="submit" class="order-button">შეკვეთის დადასტურება</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

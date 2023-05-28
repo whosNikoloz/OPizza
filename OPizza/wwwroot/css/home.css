@@ -1,0 +1,213 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+.containerL {
+    width: 600px;
+    display: flex;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    position: absolute;
+    top: 140%; /* adjust as needed */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    .containerL .btn {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 50px;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4em;
+    }
+
+@media screen and (max-width: 735px) {
+
+    h1 {
+        font-size: 1.7rem !important;
+    }
+
+    .containerL .btn {
+        width: 140px;
+        height: 30px;
+        font-size: 0.9rem;
+        margin-top: 10px; /* decrease top margin */
+        margin-bottom: 10px; /* decrease bottom margin */
+    }
+
+    .containerL {
+        width: 80%; /* decrease width for smaller screens */
+        max-width: 500px; /* set a maximum width for smaller screens */
+        margin-top: 10px; /* decrease top margin for smaller screens */
+        top: auto; /* remove top positioning */
+        bottom: -70px; /* position at the bottom for smaller screens */
+        transform: translateX(-50%); /* only horizontally center */
+    }
+}
+
+
+.containerL .btn a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 10px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    overflow: hidden;
+    color: #fff;
+    font-weight: 500px;
+    z-index: 1;
+    transition: 0.5s;
+    backdrop-filter: blur(15px);
+}
+
+
+.containerL .btn:hover a {
+    letter-spacing: 3px;
+}
+
+.containerL .btn a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+    transform: skewX(45deg) translate(0);
+    transition: 0.5s;
+    filter: blur(0px);
+}
+
+.containerL .btn:hover a::before {
+    transform: skewX(45deg) translate(200px);
+}
+
+.containerL .btn::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: -5px;
+    width: 30px;
+    height: 10px;
+    background: #f00;
+    border-radius: 10px;
+    transition: 0.5s;
+    transition-delay: 0.5;
+}
+
+.containerL .btn:hover::before /*lightup button*/ {
+    bottom: 0;
+    height: 50%;
+    width: 80%;
+    border-radius: 30px;
+}
+
+.containerL .btn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+    top: -5px;
+    width: 30px;
+    height: 10px;
+    background: #f00;
+    border-radius: 10px;
+    transition: 0.5s;
+    transition-delay: 0.5;
+}
+
+.containerL .btn:hover::after /*lightup button*/ {
+    top: 0;
+    height: 50%;
+    width: 80%;
+    border-radius: 30px;
+}
+
+.containerL .btn:nth-child(1)::before, /*chnage 1*/
+.containerL .btn:nth-child(1)::after {
+    background: #ffc107;
+    box-shadow: 0 0 5px #ffc107, 0 0 15px #ffc107, 0 0 30px #ffc107, 0 0 60px #ffc107;
+}
+
+.containerL .btn:nth-child(2)::before, /* 2*/
+.containerL .btn:nth-child(2)::after {
+    background: #ffc107;
+    box-shadow: 0 0 5px #ffc107, 0 0 15px #ffc107, 0 0 30px #ffc107, 0 0 60px #ffc107;
+}
+
+.containerL .btn:nth-child(3)::before, /* 3*/
+.containerL .btn:nth-child(3)::after {
+    background: #ffc107;
+    box-shadow: 0 0 5px #ffc107, 0 0 15px #ffc107, 0 0 30px #ffc107, 0 0 60px #ffc107;
+}
+
+.text-box {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+    .text-box h1 {
+        font-size: 40px;
+        font-weight: 600;
+        color: white;
+    }
+
+span {
+    color: #fff724;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.fullscreen-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
+    filter: blur(3px); /* adjust the blur amount as desired */
+}
+
+.fullscreen-bg__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: none; /* remove the blur filter from the video element */
+}

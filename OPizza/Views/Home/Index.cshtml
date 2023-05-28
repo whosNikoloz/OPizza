@@ -1,0 +1,27 @@
+﻿@page
+@{
+	Layout = "_LayoutWithoutFooter";
+}
+<link rel="stylesheet" href="/css/home.css">
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+<div class="fullscreen-bg">
+	<video loop muted autoplay class="fullscreen-bg__video">
+		<source src="/video/Final.mp4" type="video/mp4">
+	</video>
+</div>
+<div class="text-box">
+
+	<h1>ეს არის  <span class="auto-type"></span></h1>
+	<div class="containerL">
+		<div class="btn "><a href="@Url.Action("Index","Pizza")">შეუკვეთე</a></div>
+		<div class="btn"><a href="@Url.Action("Index","Custom")">შექმენი</a></div>
+	</div>
+</div>
+<script>
+	var typed = new Typed('.auto-type', {
+		strings: ['ადამიანი', 'გემონი', 'OPIZZA'],
+		typeSpeed: 150,
+		backSpeed: 150,
+		loop: true
+	});
+</script>

@@ -1,0 +1,176 @@
+﻿body {
+    background-color: #003223;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-panel {
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: rgba(1, 99, 70, 0.438);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+    .admin-panel h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="file"],
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    box-sizing: border-box; /* Added box-sizing property */
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+button[type="submit"],
+.add-pizza-button {
+    background-color: yellow;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    button[type="submit"]:hover,
+    .add-pizza-button:hover {
+        background-color: #ddd;
+    }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+
+.checkbox {
+    display: none;
+}
+
+.checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.checkmark {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 10px;
+    position: relative;
+    transition: background-color 0.4s;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.checkbox:checked + .checkmark {
+    background-color: #08bb68;
+}
+
+.checkmark::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 10px;
+    border-right: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateZ(40deg) scale(10);
+    opacity: 0;
+    transition: all 0.4s;
+}
+
+.checkbox:checked + .checkmark::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotateZ(40deg) scale(1);
+}
+
+.checkbox-text {
+    margin-left: 5px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.add-pizza-button {
+    background-color: #003223;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .add-pizza-button:hover {
+        background-color: #00574b;
+    }
+/* Media query for mobile devices */
+@media only screen and (max-width: 600px) {
+    .admin-panel {
+        width: 90% !important;
+        padding: 10px;
+    }
+
+        .admin-panel h2 {
+            font-size: 18px;
+        }
+
+        .admin-panel input[type="text"],
+        .admin-panel select,
+        .admin-panel textarea {
+            width: 100%;
+        }
+
+        .admin-panel img {
+            max-width: 100%;
+        }
+
+        .admin-panel .form-group {
+            margin-bottom: 10px;
+        }
+}

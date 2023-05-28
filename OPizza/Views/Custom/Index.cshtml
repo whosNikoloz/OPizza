@@ -1,0 +1,204 @@
+﻿@model OrderModel
+@{
+    Layout = "_Layout";
+}
+<html lang="en" dir="ltr">
+<head>
+    <link rel="stylesheet" href="/css/customV2.css">
+    <script src="minified/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.5/gsap.min.js"
+            integrity="sha256-CkQcTxuQyZLqzqWqntH3FDxeDKMV0m7cw0aM5eph4Do=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/plugins/animation.gsap.min.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+</head>
+<body>
+    <section class="first-section">
+        <h1 class="CustomPizzaFontH1">შექმენი  შენი<br />პიცა</h1>
+        <div class="images-wrapper">
+            <img class="section_1_bg" src="/images/CustomPage/1.png" />
+            <div class="ingredient-images">
+                <img class="section_1_01" src="/images/CustomPage/2.png" />
+
+                <img class="section_1_02" src="/images/CustomPage/3.png" />
+
+                <img class="section_1_03" src="/images/CustomPage/4.png" />
+
+                <img class="section_1_04" src="/images/CustomPage/5.png" />
+
+                <img class="section_1_05" src="/images/CustomPage/6.png" />
+
+                <img class="section_1_06" src="/images/CustomPage/7.png" />
+
+                <img class="section_1_07" src="/images/CustomPage/8.png" />
+
+                <img class="section_1_08" src="/images/CustomPage/9.png" />
+
+                <img class="section_1_09" src="/images/CustomPage/10.png" />
+            </div>
+        </div>
+    </section>
+    <section class="second-section">
+        <h1 class="CustomPizzaFontH1">Draw Attention to the Ingredients You Want the Most</h1>
+        <p class="CustomPizzaFontp">A great pizza is impossible to ignore.</p>
+        <div class="images-wrapper bottom">
+            <div class="image-container">
+                <img class="section_2_06" src="/images/CustomPage/ingr/1.1.1.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_07" src="/images/CustomPage/ingr/1.1.2.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_08" src="/images/CustomPage/ingr/1.1.3.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_09" src="/images/CustomPage/ingr/1.1.4.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_10" src="/images/CustomPage/ingr/1.1.5.png" />
+            </div>
+        </div>
+        <div class="images-wrapper top">
+            <div class="image-container">
+                <img class="section_2_01" src="/images/CustomPage/ingr/1.2.1.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_02" src="/images/CustomPage/ingr/1.2.2.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_03" src="/images/CustomPage/ingr/1.2.3.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_04" src="/images/CustomPage/ingr/1.2.4.png" />
+            </div>
+            <div class="image-container">
+                <img class="section_2_05" src="/images/CustomPage/ingr/1.2.5.png" />
+            </div>
+        </div>
+    </section>
+    <section class="third-section">
+        <h1 class="CustomPizzaFontH1">Add Anything You Want</h1>
+        <p class="CustomPizzaFontp">Easily add animation to cheese, black olives, herbs & more.</p>
+        <div class="images-wrapper">
+            <img class="section_3_06" src="/images/CustomPage/pizza/3.1.png" />
+            <img class="section_3_05" src="/images/CustomPage/pizza/3.2.png" />
+            <img class="section_3_04" src="/images/CustomPage/pizza/3.3.png" />
+            <img class="section_3_03" src="/images/CustomPage/pizza/3.4.png" />
+            <img class="section_3_02" src="/images/CustomPage/pizza/3.5.png" />
+            <img class="section_3_01" src="/images/CustomPage/pizza/3.6.png" />
+        </div>
+    </section>
+    <section class="forth-section">
+        <h1 class="CustomPizzaFontH1">14 Types of Pizzas</h1>
+        <p class="CustomPizzaFontp">With so many different ingredients and add-ons, the possibilities are endless.</p>
+        <div class="images-wrapper">
+            <img class="section_4_01" src="/images/CustomPage/pizza/1.png" height="700" />
+            <img class="section_4_02" src="/images/CustomPage/pizza/2.png" height="700" />
+            <img class="section_4_03" src="/images/CustomPage/pizza/3.png" height="700" />
+            <img class="section_4_04" src="/images/CustomPage/pizza/4.png" height="700" />
+        </div>
+    </section>
+    <div style="display: flex; justify-content: center;">
+        <script src="/js/custom.js"></script>
+        <video loop muted autoplay class="CustomVid">
+            <source src="/video/CustomPizzaVID.mp4" type="video/mp4">
+        </video>
+    </div>
+    <form method="post" action="@Url.Action("Create", "Custom")">
+        <div class="container">
+            <h1 class="title">Toppings</h1>
+            <div class="form-group">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Anchovies" id="topping10" class="checkbox">
+                    <label for="topping10" class="checkmark"></label>
+                    <span class="checkbox-text">ანჩოუსები</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Bacon" id="topping6" class="checkbox">
+                    <label for="topping6" class="checkmark"></label>
+                    <span class="checkbox-text">ბეკონი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="GreenPeppers" id="topping8" class="checkbox">
+                    <label for="topping8" class="checkmark"></label>
+                    <span class="checkbox-text">მწვანე წიწაკა</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Ham" id="topping2" class="checkbox">
+                    <label for="topping2" class="checkmark"></label>
+                    <span class="checkbox-text">ლორი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Jalapenos" id="topping11" class="checkbox">
+                    <label for="topping11" class="checkmark"></label>
+                    <span class="checkbox-text">ჯალაპენოსი</span>
+                </div>
+
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Mushrooms" id="topping4" class="checkbox">
+                    <label for="topping4" class="checkmark"></label>
+                    <span class="checkbox-text">სოკო</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Olives" id="topping5" class="checkbox">
+                    <label for="topping5" class="checkmark"></label>
+                    <span class="checkbox-text">ზეთისხილი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Onions" id="topping7" class="checkbox">
+                    <label for="topping7" class="checkmark"></label>
+                    <span class="checkbox-text">ხახვი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Pepperoni" id="topping3" class="checkbox">
+                    <label for="topping3" class="checkmark"></label>
+                    <span class="checkbox-text">პეპერონი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="Pineapple" id="topping9" class="checkbox">
+                    <label for="topping9" class="checkmark"></label>
+                    <span class="checkbox-text">ანანასი</span>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" asp-for="TomatoSauce" id="topping1" class="checkbox">
+                    <label for="topping1" class="checkmark"></label>
+                    <span class="checkbox-text">ტომატის სოუსი</span>
+                </div>
+                <br>
+                <br>
+
+                <label for="cheese-select" style="color: white; font-size: 2rem; margin-left: 60px; margin-top: 20px;">აირჩიე ყველი:</label>
+                <select id="cheese-select" name="cheesetype">
+                    <option value="none">არა</option>
+                    <option value="cheddar">Cheddar</option>
+                    <option value="mozzarella">Mozzarella</option>
+                    <option value="swiss">Swiss</option>
+                    <option value="gouda">Gouda</option>
+                    <option value="blue">Blue Cheese</option>
+                    <option value="parmesan">Parmesan</option>
+                    <option value="provolone">Provolone</option>
+                    <option value="burrata">Burrata</option>
+                    <option value="sulguni">Sulguni</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit">
+            შეკვეთა
+        </button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</body>
+</html>

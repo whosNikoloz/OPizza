@@ -1,0 +1,30 @@
+﻿@{
+    var parentLayout = ViewData["ParentLayout"] as string;
+    var layout = string.IsNullOrEmpty(parentLayout) ? "/Areas/Identity/Pages/_Layout.cshtml" : parentLayout;
+}
+
+@{
+    Layout = "_LayoutWithoutFooter";
+}
+
+<link rel="stylesheet" href="/css/manageacc.css">
+<div class="container">
+    <div>
+        <h1>Manage your account</h1>
+        <div>
+            <hr />
+            <div class="row">
+                <div class="col-md-3">
+                    <partial name="_ManageNav" />
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

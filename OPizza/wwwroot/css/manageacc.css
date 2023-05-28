@@ -1,0 +1,22 @@
+﻿body {
+    background-color: #003223;
+}
+
+.container {
+    height: 50vh;
+    background-color: white;
+    border-radius: 10px;
+    width: 1000px;
+}
+
+h1, h2 {
+    color: black;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .container {
+        height: 75vh;
+        width: 90%;
+    }
+}

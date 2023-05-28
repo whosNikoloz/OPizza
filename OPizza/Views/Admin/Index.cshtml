@@ -1,0 +1,71 @@
+﻿@model PizzaViewModel
+@{
+    Layout = "_Layout";
+}
+<html lang="en" dir="ltr">
+<head>
+    <link rel="stylesheet" href="/css/pizzaV2.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:900" rel="stylesheet">
+    <script src="/js/site.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+</head>
+<body>
+    <section data-aos="fade-up" data-aos-duration="1600">
+        <div class="text-container">
+            <h1>ADMIN</h1>
+        </div>
+        <br />
+
+        <div class="row justify-content-center parent-container">
+            @foreach (var pizza in Model.Pizzas)
+            {
+                <div class="card">
+                    <div class="circle"></div>
+                    @if (pizza.Data != null && pizza.Data.Length > 0)
+                    {
+                        string base64Image = Convert.ToBase64String(pizza.Data);
+                        string imageSource = string.Format("data:image/png;base64,{0}", base64Image);
+                        <img src="@imageSource" />
+                    }
+                    <div class="content">
+                        <h2>@pizza.PizzaName</h2>
+                        <p>@pizza.Description @pizza.FinalPrice₾</p>
+                        <form asp-controller="Admin" asp-action="Edit" method="get">
+                            <input type="hidden" name="id" value="@pizza.Id" />
+                            <button role="button"> <span class="text"> Edit</span> </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <section data-aos="fade-up" data-aos-duration="1600" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1 class="text-white">პიცის დამატება</h1>
+        <br />
+        <br />
+        <button class="button-38" role="button" type="submit" onclick="location.href='@Url.Action("AddPizza", "Admin")'"> <span class="text">დამატება</span></button>
+    </section>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+</body>
+</html>
+

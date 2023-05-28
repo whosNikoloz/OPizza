@@ -1,0 +1,131 @@
+﻿body {
+    background-color: #003223;
+}
+
+.pizza-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(14px);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    width: 750px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 23px;
+    color: white;
+    margin: 0 auto;
+}
+
+.pizza-image img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.pizza-details {
+    flex-grow: 1;
+    margin-left:59px;
+}
+
+.pizza-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.pizza-price {
+    font-size: 16px;
+    color: #ccc;
+}
+
+.pizza-ingredients {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+    .pizza-ingredients li {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+.final-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-evenly; /* Adjusted to have less space between buttons */
+    margin-right:45px
+}
+
+.order-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: 5px; /* Adjusted spacing */
+}
+
+    .order-button:hover {
+        background-color: #45a049;
+    }
+    .order-button:last-child {
+        margin-right: 0; /* Remove margin from the last button */
+    }
+
+@media only screen and (max-width: 768px) {
+    .pizza-card {
+        width: 90%;
+        max-width: 500px;
+    }
+
+    .pizza-image img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .pizza-details {
+        margin-left: 0;
+    }
+
+    .pizza-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .pizza-price {
+        font-size: 14px;
+    }
+
+    .pizza-ingredients li {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .final-price {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .button-container {
+        flex-direction: column;
+    }
+
+    .order-button {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 3px; /* Adjusted spacing */
+    }
+}

@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OPizza</title>
+
+    <link rel="icon" href="/images/WEBIcon.png" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/OPizza.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager
+</head>
+<body>
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><span></span></label>
+
+    <a asp-controller="home" asp-action="index" class="link-class"><img id="logo" src="~/images/Logo/logo.png"></a>
+
+
+    <div class="wrapper">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Pizza" asp-action="Index">Pizzas</a></li>
+            <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li >
+                    <a  asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
+                </li>
+            }
+            else
+            {
+                <li >
+                    <a asp-area="Identity" asp-page="/Account/Login">Profile</a>
+                </li>
+            }
+            
+        </ul>
+       
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=100009152091053"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/nika16796240"><i class="fab fa-twitter"></i></a>
+            <a href="https://github.com/whosNikoloz"><i class="fab fa-github"></i></a>
+            <a href="https://www.instagram.com/kobaidze0/"><i class="fab fa-instagram"></i></a>
+        </div>
+
+    </div>
+    <div >
+            @RenderBody()
+    </div>
+
+    <footer class="footer-distributed">
+
+        <div class="footer-left">
+
+            <IMG SRC="/images/Logo/LogoFooter.png" ALT="" WIDTH=150 HEIGHT=100>
+
+            <p class="footer-links">
+                <a href="@Url.Action("Home", "Index")">Home</a> ·
+                <a href="#">About</a> ·
+                <a href="#">Pricing</a> ·
+                <a href="#">Faq</a> ·
+                <a href="#">Contact</a> ·
+            </p>
+
+            <p class="footer-company-name">OPIZZA &copy; 2023</p>
+        </div>
+
+        <div class="footer-center">
+
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Tbilis,Georgia</span> ღმერთების ქალაქი</p>
+            </div>
+
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>+955 577 602 399</p>
+            </div>
+
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:nika.kobaidze04@gmail.com">nika.kobaidze04@gmail.com</a></p>
+            </div>
+
+        </div>
+
+        <div class="footer-right">
+
+            <p class="footer-company-about">
+                <span>არწერა</span>
+                Georgia County Pizza is a local pizza company located in Georgia County, USA. They specialize in crafting delicious pizzas using fresh, locally sourced ingredients. With a diverse menu offering a variety of toppings and crust options, Georgia County Pizza is sure to satisfy every pizza lover's cravings. Their commitment to excellent customer service sets them apart, making them a favorite choice for residents and visitors alike in Georgia County.
+            </p>
+
+            <div class="footer-icons">
+
+                <a href="https://www.facebook.com/profile.php?id=100009152091053"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com/nika16796240"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/nikoloz-kobaidze-298a35254/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/whosNikoloz"><i class="fab fa-github"></i></a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿@page
+@model RegisterModel
+@{
+    Layout = "_LayoutWithoutFooter";
+}
+
+<link rel="stylesheet" href="/css/userForm.css">
+<div class="container">
+    <div class="registration form">
+        <header>Signup</header>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+
+            <input asp-for="Input.Email" id="email" type="text" placeholder="Enter your email" autocomplete="username" aria-required="true">
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+            <input id="username" asp-for="Input.UserName" type="text" placeholder="Enter your UserName"  aria-required="true" />
+            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+
+            <input id="password" asp-for="Input.Password" type="password" placeholder="Create a password" autocomplete="new-password" aria-required="true" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+
+            <input id="confirmPassword" asp-for="Input.ConfirmPassword" placeholder="Confirm your password" autocomplete="new-password" aria-required="true" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+
+            <input id="registerSubmit" type="submit" class="button" value="Signup">
+        </form>
+        <div class="signup">
+            <span class="signup">Already have an account? <a href="/Identity/Account/Login">Login</a></span>
+        </div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@modelError.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

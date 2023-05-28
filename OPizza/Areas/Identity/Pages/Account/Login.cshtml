@@ -1,0 +1,75 @@
+﻿@page
+@model LoginModel
+
+@{
+    Layout = "_LayoutWithoutFooter";
+}
+<style>
+ 
+
+
+    .checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.3rem;
+        margin-bottom:-20px;
+    }
+
+        .checkbox label {
+            order: 1;
+            font-size: 16px;
+            color: black;
+            margin-right: 8px;
+           
+        }
+
+        .checkbox input[type="checkbox"] {
+            display: inline-block;
+            width: 2px;
+            height: 14px;
+            order: 2;
+            margin-right: 0;
+        }
+
+    
+
+
+</style>
+<link rel="stylesheet" href="/css/userForm.css">
+<div class="container">
+    <div class="login form">
+        <header>Login</header>
+        <form id="account" method="post">
+
+            <input asp-for="Input.UserName" type="text" placeholder="Enter your UserName" aria-required="true">
+            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            <input asp-for="Input.Password" type="password" placeholder="Enter your password" autocomplete="current-password" aria-required="true">
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <div class="checkbox">
+                <label asp-for="Input.RememberMe" class="form-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+
+            <input type="submit" class="button" value="Login">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <p>Login unsuccessful. Please check your Username or Password.</p>
+                </div>
+            }
+
+        </form>
+        <div class="signup">
+            <span class="signup">Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" onclick="toggleForms()">Signup</a></span>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

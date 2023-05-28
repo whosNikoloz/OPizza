@@ -1,0 +1,113 @@
+﻿@model Pizza
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+    <link rel="stylesheet" href="/css/adminadd.css">
+
+</head>
+
+
+<form asp-action="Edit" asp-controller="Admin" method="post">
+    <div class="admin-panel">
+        <h2> Admin Edit</h2>
+        @if (Model.Data != null && Model.Data.Length > 0)
+        {
+            string base64Image = Convert.ToBase64String(Model.Data);
+            string imageSource = string.Format("data:image/png;base64,{0}", base64Image);
+            <img src="@imageSource" class="pizza-image" style="width:400px;" />
+        }
+
+        <input type="hidden" asp-for="Id" /> <!-- Hidden field for PizzaId, required for model binding -->
+        <input type="hidden" asp-for="Data" /> <!-- Hidden field for PizzaId, required for model binding -->
+
+        <div class="form-group">
+            <label for="pizza-name">Pizza Name</label>
+            <input type="text" asp-for="PizzaName" placeholder="@Model.PizzaName" style="width: 300px;">
+        </div>
+        <div class="form-group">
+            <label for="pizza-description">Description</label>
+            <textarea asp-for="Description" placeholder="@Model.Description" style="width: 340px;"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="cheese">Cheese:</label>
+            <select id="cheese" name="cheese" style="width: 200px;">
+                <option value="none">არა</option>
+                <option value="cheddar">Cheddar</option>
+                <option value="mozzarella">Mozzarella</option>
+                <option value="swiss">Swiss</option>
+                <option value="gouda">Gouda</option>
+                <option value="blue">Blue Cheese</option>
+                <option value="parmesan">Parmesan</option>
+                <option value="provolone">Provolone</option>
+                <option value="burrata">Burrata</option>
+                <option value="sulguni">sulguni</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="FinalPrice">Price:</label>
+            <input type="text" asp-for="FinalPrice" class="form-control" placeholder="@Model.FinalPrice" />
+        </div>
+
+        <label>Toppings:</label>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="TomatoSauce" id="topping1" class="checkbox">
+            <label for="topping1" class="checkmark"></label>
+            <span class="checkbox-text">TomatoSauce</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Ham" id="topping2" class="checkbox">
+            <label for="topping2" class="checkmark"></label>
+            <span class="checkbox-text">Ham</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Pepperoni" id="topping3" class="checkbox">
+            <label for="topping3" class="checkmark"></label>
+            <span class="checkbox-text">Pepperoni</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Mushrooms" id="topping4" class="checkbox">
+            <label for="topping4" class="checkmark"></label>
+            <span class="checkbox-text">Mushrooms</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Olives" id="topping5" class="checkbox">
+            <label for="topping5" class="checkmark"></label>
+            <span class="checkbox-text">Olives</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Bacon" id="topping6" class="checkbox">
+            <label for="topping6" class="checkmark"></label>
+            <span class="checkbox-text">Bacon</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Onions" id="topping7" class="checkbox">
+            <label for="topping7" class="checkmark"></label>
+            <span class="checkbox-text">Onions</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="GreenPeppers" id="topping8" class="checkbox">
+            <label for="topping8" class="checkmark"></label>
+            <span class="checkbox-text">GreenPeppers</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Pineapple" id="topping9" class="checkbox">
+            <label for="topping9" class="checkmark"></label>
+            <span class="checkbox-text">Pineapple</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Anchovies" id="topping10" class="checkbox">
+            <label for="topping10" class="checkmark"></label>
+            <span class="checkbox-text">Anchovies</span>
+        </div>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" asp-for="Jalapenos" id="topping11" class="checkbox">
+            <label for="topping11" class="checkmark"></label>
+            <span class="checkbox-text">Jalapenos</span>
+        </div>
+
+        <button class="add-pizza-button" value="Save" style="background-color:yellow  !important;color:black;">Save</button>
+        <button class="add-pizza-button" asp-action="Delete" asp-controller="Admin" style="background-color:red !important;">Delete</button>
+    </div>
+</form>
+
+
