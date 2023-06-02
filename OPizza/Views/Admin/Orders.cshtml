@@ -1,0 +1,83 @@
+﻿@model List<OrderViewModel>
+@{
+    Layout = "_LayoutForOrders";
+}
+
+<style>
+    body {
+        background-image: url(/images/bgsvg.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+
+    table.table {
+        color: white;
+    }
+
+        table.table th {
+            color: white;
+        }
+
+        table.table td {
+            color: white;
+        }
+
+        table.table a.btn {
+            color: white;
+        }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .glass-container {
+        background-color: rgba(255, 255, 255, 0.2); /* Set the background color with transparency */
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
+    }
+</style>
+
+<h1 class="text-center text-white">Orders</h1>
+
+<br />
+<div class="container">
+    <div class="glass-container">
+        <div class="table-responsive">
+            <table class="table mt-5">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Pizza Name</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orderViewModel in Model)
+                    {
+                        foreach (var order in orderViewModel.Orders)
+                        {
+                            var user = orderViewModel.Users.FirstOrDefault(u => u.Id == order.UserId);
+                            <tr>
+                                <td scope="row">@order.Id</td>
+                                <td>@order.PizzaName</td>
+                                <td>@user.UserName</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@order.FinalPrice ლ</td>
+                                <td>@order.OrderDate</td>
+                                <td><a href="View/@order.Id" class="btn btn-warning btn-sm text-black">View</a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

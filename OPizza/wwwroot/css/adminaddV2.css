@@ -1,5 +1,8 @@
 ﻿body {
-    background-color: #003223;
+    background-image: url(/images/bgsvg2.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     color: #fff;
     margin: 0;
     padding: 0;

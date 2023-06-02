@@ -1,0 +1,139 @@
+﻿@model OrderViewModel
+
+@{
+    Layout = "_LayoutForOrders";
+}
+
+<style>
+    body {
+        background-image: url(/images/bgsvg2.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+
+    input {
+        width: 60px; /* Adjust the width as per your requirement */
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .glass-container {
+        background-color: rgba(255, 255, 255, 0.2); /* Set the background color with transparency */
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
+    }
+</style>
+<br />
+<div class="container">
+    <div class="glass-container">
+<div class="row">
+    <div class="col">
+        <h4 class="text-white">User Info</h4>
+
+        <div class="mb-3">
+            <label for="" class="form-label text-white">Id</label>
+            <input type="text" class="form-control" placeholder="@Model.Order.Id" readonly>
+        </div>
+        <div class="form-group">
+            <label for="Name" class="form-label text-white">UserName</label>
+            <input type="text" class="form-control" placeholder="@Model.User.UserName" readonly>
+        </div>
+        <div class="form-group">
+            <label for="Email" class="form-label text-white">Email</label>
+            <input type="text" class="form-control" placeholder="@Model.User.Email" readonly>
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber" class="form-label text-white">Phone Number</label>
+            <input type="text" class="form-control" placeholder="@Model.User.PhoneNumber" readonly>
+        </div>
+    </div>
+
+    <div class="col">
+        <h4 class="text-white">Order Details</h4>
+
+        <div class="form-group">
+            <label for="FinalPrice" class="form-label text-white">Price</label>
+            <input type="text" class="form-control" placeholder="@Model.Order.FinalPrice" readonly>
+        </div>
+        <div class="form-group">
+            <label for="OrderDate" class="form-label text-white">Order Date</label>
+            <input type="text" class="form-control" placeholder="@Model.Order.OrderDate" readonly>
+        </div>
+
+        @if (Model.Order.PizzaName == "Custom")
+        {
+            <div class="form-group">
+                <label class="form-label text-white">Custom Pizza Toppings</label>
+                <ul class="list-unstyled text-white">
+                    @if (Model.Order.TomatoSauce)
+                    {
+                        <li>Tomato Sauce: Yes</li>
+                    }
+                    @if (Model.Order.Ham)
+                    {
+                        <li>Ham: Yes</li>
+                    }
+                    @if (Model.Order.Pepperoni)
+                    {
+                        <li>Pepperoni: Yes</li>
+                    }
+                    @if (Model.Order.Mushrooms)
+                    {
+                        <li>Mushrooms: Yes</li>
+                    }
+                    @if (Model.Order.Olives)
+                    {
+                        <li>Olives: Yes</li>
+                    }
+                    <li>Cheese: @Model.Order.CheeseType.ToString()</li>
+                    @if (Model.Order.Bacon)
+                    {
+                        <li>Bacon: Yes</li>
+                    }
+                    @if (Model.Order.Onions)
+                    {
+                        <li>Onions: Yes</li>
+                    }
+                    @if (Model.Order.GreenPeppers)
+                    {
+                        <li>Green Peppers: Yes</li>
+                    }
+                    @if (Model.Order.Pineapple)
+                    {
+                        <li>Pineapple: Yes</li>
+                    }
+                    @if (Model.Order.Jalapenos)
+                    {
+                        <li>Jalapenos: Yes</li>
+                    }
+                    @if (Model.Order.Anchovies)
+                    {
+                        <li>Anchovies: Yes</li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label for="PizzaName" class="form-label text-white">Pizza</label>
+                <input type="text" class="form-control text-white" placeholder="@Model.Order.PizzaName" readonly>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col text-center">
+        <a href="@Url.Action("Delete", new { Id = Model.Order.Id })" class="btn btn-success btn-sm">Order Done</a>
+    </div>
+</div>
+</div>
+</div>
+

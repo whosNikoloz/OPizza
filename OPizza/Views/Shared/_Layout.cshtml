@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - OPizza</title>
+    <title>@ViewData["Title"] OPizza</title>
 
     <link rel="icon" href="/images/WEBIcon.png" type="image/x-icon" />
 
@@ -31,6 +31,7 @@
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li><a asp-area="" asp-controller="Pizza" asp-action="Index">Pizzas</a></li>
             <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+            <li><a asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a></li>
             @if (SignInManager.IsSignedIn(User))
             {
                 <li >
@@ -54,9 +55,11 @@
         </div>
 
     </div>
-    <div >
-            @RenderBody()
+    <div>
+        @RenderBody()
     </div>
+
+
 
     <footer class="footer-distributed">
 

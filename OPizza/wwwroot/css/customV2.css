@@ -4,7 +4,10 @@
 }
 
 body {
-    background-color: #003223 !important;
+    background-image: url(/images/bgsvg2.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 

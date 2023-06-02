@@ -114,12 +114,11 @@ body {
             text-decoration: none;
             font-size: 30px;
             font-weight: 500;
-            padding: 5px 30px;
             color: #fff;
             border-radius: 50px;
             position: absolute;
             line-height: 50px;
-            margin: 5px 30px;
+            margin: 5px 49px;
             opacity: 0;
             transition: all 0.3s ease;
             transition: transform .6s cubic-bezier(0.215, 0.61, 0.355, 1);

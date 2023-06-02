@@ -33,6 +33,10 @@
     }
 
 @media screen and (max-width: 735px) {
+    .fullscreen-bg__video {
+        width: auto;
+        height: auto;
+    }
 
     h1 {
         font-size: 1.7rem !important;

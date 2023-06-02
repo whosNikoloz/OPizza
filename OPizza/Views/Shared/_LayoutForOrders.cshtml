@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] OPizza</title>
+
+    <link rel="icon" href="/images/WEBIcon.png" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/OPizza.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager
+</head>
+<body>
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><span></span></label>
+
+    <a asp-controller="home" asp-action="index" class="link-class"><img id="logo" src="~/images/Logo/logo.png"></a>
+
+
+    <div class="wrapper">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Pizza" asp-action="Index">Pizzas</a></li>
+            <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+            <li><a asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a></li>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Login">Profile</a>
+                </li>
+
+            }
+        </ul>
+       
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=100009152091053"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com/nika16796240"><i class="fab fa-twitter"></i></a>
+            <a href="https://github.com/whosNikoloz"><i class="fab fa-github"></i></a>
+            <a href="https://www.instagram.com/kobaidze0/"><i class="fab fa-instagram"></i></a>
+        </div>
+
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

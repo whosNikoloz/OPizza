@@ -1,61 +1,106 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
+using NuGet.Versioning;
 using OPizza.Context;
 using OPizza.Models;
+using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace OPizza.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly string _connectionString = "Data Source=.\\sqlexpress;Initial Catalog=Opizza;Integrated Security=True;TrustServerCertificate=True";
+
+
+        private readonly OrderDbContext _OrderDb;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly PizzaDbContext db;
+        public AdminController(PizzaDbContext db, OrderDbContext orderDb, UserManager<IdentityUser> userManager)
+        {
+            this.db = db; 
+            this._OrderDb = orderDb;
+            this._userManager = userManager;
+        }
+
+
+
+
+
+        private readonly string _connectionString = "Server=tcp:opizzadbserver.database.windows.net,1433;Initial Catalog=OPizza_db;Persist Security Info=False;User ID=opizzaowner;Password=1Admin1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private readonly string query = "SELECT id, PizzaName, TomatoSauce, Ham, Pepperoni,Data, Mushrooms, Olives,Pineapple,Anchovies,Bacon,CheeseType,GreenPeppers,Jalapenos,Onions,Description, FinalPrice FROM Pizzas";
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             PizzaViewModel viewModel = new PizzaViewModel();
-            var pizzas = GetAllPizzas();
+            var pizzas = await GetAllPizzasAsync();
             viewModel.Pizzas = pizzas != null ? pizzas : new List<Pizza>();
             return View(viewModel);
         }
 
-        private List<Pizza> GetAllPizzas()
+        private async Task<byte[]> GetBytesAsync(SqlDataReader reader, int ordinal)
+        {
+            const int bufferSize = 4096;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                byte[] buffer = new byte[bufferSize];
+                long bytesRead;
+                long fieldOffset = 0;
+
+                // Start a separate thread/task to read the bytes asynchronously
+                await Task.Run(() =>
+                {
+                    while ((bytesRead = reader.GetBytes(ordinal, fieldOffset, buffer, 0, bufferSize)) > 0)
+                    {
+                        stream.Write(buffer, 0, (int)bytesRead);
+                        fieldOffset += bytesRead;
+                    }
+                });
+
+                return stream.ToArray();
+            }
+        }
+        private async Task<List<Pizza>> GetAllPizzasAsync()
         {
             List<Pizza> pizzas = new List<Pizza>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
+                command.CommandTimeout = 120;
 
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
+                await connection.OpenAsync();
 
-                while (reader.Read())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
                 {
-                    Pizza pizza = new Pizza();
+                    while (await reader.ReadAsync())
+                    {
+                        Pizza pizza = new Pizza();
 
-                    pizza.Id = (int)reader["id"];
-                    pizza.PizzaName = (string)reader["PizzaName"];
-                    pizza.Description = (string)reader["Description"];
-                    pizza.CheeseType = (string)reader["CheeseType"];
-                    pizza.Pineapple = (bool)reader["Pineapple"];
-                    pizza.TomatoSauce = (bool)reader["TomatoSauce"];
-                    pizza.Anchovies = (bool)reader["Anchovies"];
-                    pizza.Jalapenos = (bool)reader["Jalapenos"];
-                    pizza.Onions = (bool)reader["Onions"];
-                    pizza.GreenPeppers = (bool)reader["GreenPeppers"];
-                    pizza.Bacon = (bool)reader["Bacon"];
-                    pizza.Pepperoni = (bool)reader["Pepperoni"];
-                    pizza.Ham = (bool)reader["Ham"];
-                    pizza.Mushrooms = (bool)reader["Mushrooms"];
-                    pizza.Olives = (bool)reader["Olives"];
-                    pizza.FinalPrice = (decimal)reader["FinalPrice"];
-                    pizza.Data = (byte[])reader["Data"];
+                        pizza.Id = reader.GetInt32(reader.GetOrdinal("id"));
+                        pizza.PizzaName = reader.GetString(reader.GetOrdinal("PizzaName"));
+                        pizza.Description = reader.GetString(reader.GetOrdinal("Description"));
+                        pizza.CheeseType = reader.GetString(reader.GetOrdinal("CheeseType"));
+                        pizza.Pineapple = reader.GetBoolean(reader.GetOrdinal("Pineapple"));
+                        pizza.TomatoSauce = reader.GetBoolean(reader.GetOrdinal("TomatoSauce"));
+                        pizza.Anchovies = reader.GetBoolean(reader.GetOrdinal("Anchovies"));
+                        pizza.Jalapenos = reader.GetBoolean(reader.GetOrdinal("Jalapenos"));
+                        pizza.Onions = reader.GetBoolean(reader.GetOrdinal("Onions"));
+                        pizza.GreenPeppers = reader.GetBoolean(reader.GetOrdinal("GreenPeppers"));
+                        pizza.Bacon = reader.GetBoolean(reader.GetOrdinal("Bacon"));
+                        pizza.Pepperoni = reader.GetBoolean(reader.GetOrdinal("Pepperoni"));
+                        pizza.Ham = reader.GetBoolean(reader.GetOrdinal("Ham"));
+                        pizza.Mushrooms = reader.GetBoolean(reader.GetOrdinal("Mushrooms"));
+                        pizza.Olives = reader.GetBoolean(reader.GetOrdinal("Olives"));
+                        pizza.FinalPrice = reader.GetDecimal(reader.GetOrdinal("FinalPrice"));
+                        pizza.Data = await GetBytesAsync(reader, reader.GetOrdinal("Data"));
 
-                    pizzas.Add(pizza);
+                        pizzas.Add(pizza);
+                    }
                 }
-
-                reader.Close();
             }
 
             return pizzas;
@@ -63,11 +108,8 @@ namespace OPizza.Controllers
 
 
 
-        private readonly PizzaDbContext db;
-        public AdminController(PizzaDbContext db)
-        {
-            this.db = db;
-        }
+
+
         public IActionResult AddPizza()
         {
 
@@ -193,6 +235,61 @@ namespace OPizza.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+
+
+
+
+
+        [HttpGet]
+        public IActionResult Orders()
+        {
+            var users = _userManager.Users.ToList();
+            var orders = _OrderDb.Orders.ToList();
+
+            var viewModel = new List<OrderViewModel>
+            {
+                new OrderViewModel
+                {
+                   Orders = orders,
+                    Users = users
+                }
+            };
+
+            return View(viewModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> View(int id)
+        {
+            var order = await _OrderDb.Orders.FindAsync(id);
+            if (order != null)
+            {
+                var user = await _userManager.FindByIdAsync(order.UserId);
+                var model = new OrderViewModel
+                {
+                    User = user,
+                    Order = order,
+                };
+                return View(model);
+
+            }
+            return RedirectToAction("Orders");
+        }
+
+
+
+        [HttpGet]
+        public IActionResult  Delete(int Id)
+        {
+            var order = _OrderDb.Orders.Find(Id);
+            if (order != null)
+            {
+                _OrderDb.Orders.Remove(order);
+                _OrderDb.SaveChanges();
+
+                return RedirectToAction("Orders");
+            }
+            return RedirectToAction("Orders");
         }
     }
 }
