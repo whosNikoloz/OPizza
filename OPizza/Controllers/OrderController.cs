@@ -63,6 +63,7 @@ namespace OPizza.Controllers
             _context.Orders.Add(newOrder);
             _context.SaveChanges();
 
+
             return RedirectToAction("Index", "Home");
         }
 

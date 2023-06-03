@@ -104,7 +104,7 @@ body {
             border-radius: 50px;
             position: absolute;
             line-height: 50px;
-            margin: 5px 49px;
+            margin: 5px 46px;
             opacity: 0;
             transition: all 0.3s ease;
             transition: transform .6s cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -305,8 +305,8 @@ input[type="checkbox"] {
     }
 
     #logo {
-        height: 60px; /* decrease height for smaller screens */
-        margin: 15px; /* decrease margin for smaller screens */
+        height: 45px; /* decrease height for smaller screens */
+        margin: 10px; /* decrease margin for smaller screens */
     }
 }
 

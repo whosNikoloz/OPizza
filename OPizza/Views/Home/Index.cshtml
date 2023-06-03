@@ -2,15 +2,16 @@
 @{
 	Layout = "_LayoutWithoutFooter";
 }
-<link rel="stylesheet" href="/css/homeV2.css">
+<link rel="stylesheet" href="/css/homeV4.css">
 <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
 
 <div class="fullscreen-bg">
 	<video loop muted autoplay class="fullscreen-bg__video">
 		<source src="/video/Final.mp4" type="video/mp4">
 	</video>
+	<div class="fullscreen-bg__image"></div>
 </div>
-<div class="fullscreen-bg__image"></div>
 <div class="text-box">
 
 	<h1>ეს არის  <span class="auto-type"></span></h1>
@@ -21,7 +22,7 @@
 </div>
 <script>
 	var typed = new Typed('.auto-type', {
-		strings: ['ადამიანი', 'გემონი', 'OPIZZA'],
+		strings: ['OPIZZA', 'გემონი', 'ადამიანი'],
 		typeSpeed: 150,
 		backSpeed: 150,
 		loop: true

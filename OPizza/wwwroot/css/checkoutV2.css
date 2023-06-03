@@ -50,7 +50,7 @@
 }
 
     .pizza-ingredients li {
-        font-size: 14px;
+        font-size: 18px;
         margin-bottom: 5px;
     }
 
@@ -76,6 +76,7 @@
     cursor: pointer;
     margin-top: auto;
     margin-bottom: 5px; /* Adjusted spacing */
+    margin-right:10px;
 }
 
     .order-button:hover {
@@ -92,7 +93,7 @@
     }
 
     .pizza-image img {
-        width: 100%;
+        width: 90%;
         max-width: 100%;
         height: auto;
         margin-right: 0;
@@ -113,7 +114,7 @@
     }
 
     .pizza-ingredients li {
-        font-size: 12px;
+        font-size: 15px;
         margin-bottom: 3px;
     }
 
@@ -128,7 +129,8 @@
 
     .order-button {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 8px;
         margin-bottom: 3px; /* Adjusted spacing */
+        font-size:8px;
     }
 }

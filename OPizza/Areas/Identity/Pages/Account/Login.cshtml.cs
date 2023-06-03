@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace OPizza.Areas.Identity.Pages.Account
 {
+    [RequireHttps]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -65,9 +66,9 @@ namespace OPizza.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-[DataType(DataType.Text)]
-[Display(Name = "User Name")]
-public string UserName { get; set; }
+            [DataType(DataType.Text)]
+            [Display(Name = "User Name")]
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

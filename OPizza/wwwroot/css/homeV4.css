@@ -32,10 +32,35 @@
         font-size: 1.4em;
     }
 
+@media screen and (min-width: 736px) {
+    .fullscreen-bg__image {
+        display: none;
+    }
+    
+}
+
 @media screen and (max-width: 735px) {
-    .fullscreen-bg__video {
-        width: auto;
-        height: auto;
+    .fullscreen-bg {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        z-index: -100;
+        filter: none;
+    }
+
+    .fullscreen-bg__video{
+        display:none;
+    }
+
+    .fullscreen-bg__image {
+        background-image: url(/images/Homebg.jpg);
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
     }
 
     h1 {
@@ -57,13 +82,6 @@
         top: auto; /* remove top positioning */
         bottom: -70px; /* position at the bottom for smaller screens */
         transform: translateX(-50%); /* only horizontally center */
-    }
-    .fullscreen-bg__video {
-        display: none;
-    }
-
-    .fullscreen-bg__image {
-        display: block;
     }
 
 }
@@ -211,7 +229,7 @@ a {
     left: 0;
     overflow: hidden;
     z-index: -100;
-    filter: blur(3px); /* adjust the blur amount as desired */
+    filter: none; /* adjust the blur amount as desired */
 }
 
 .fullscreen-bg__video {
@@ -221,18 +239,8 @@ a {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: none; /* remove the blur filter from the video element */
+    filter: blur(3px); /* remove the blur filter from the video element */
 }
 
 
-.fullscreen-bg__image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(/images/Homebg.jpg);
-    background-size: cover;
-    z-index: -100;
-}
 

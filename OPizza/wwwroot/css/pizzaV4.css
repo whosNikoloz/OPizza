@@ -185,9 +185,10 @@ body {
         .text-container h1 {
             font-size: 60px;
         }
-    .card{
-        width:310px;
-        height:auto;
+    .card {
+        width: 310px;
+        height: auto;
+        overflow: hidden;
     }
         .card .content {
             position: relative;
@@ -201,7 +202,8 @@ body {
         }
 
         .card img {
-            height: 250px;
+            max-height: 100%;
+            width: auto;
         }
         .card:hover img {
             left: 72%;
