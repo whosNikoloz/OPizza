@@ -27,23 +27,28 @@
 
 
     <div class="wrapper">
+        <label for="active" class="menu-btn"><span></span></label>
         <ul>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li><a asp-area="" asp-controller="Pizza" asp-action="Index">Pizzas</a></li>
-            <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
-            <li><a asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a></li>
             @if (SignInManager.IsSignedIn(User))
             {
                 <li>
                     <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
                 </li>
+
+                var user = await UserManager.GetUserAsync(User);
+                @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                {
+                    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
+                    <li><a asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a></li>
+                }
             }
             else
             {
                 <li>
                     <a asp-area="Identity" asp-page="/Account/Login">Profile</a>
                 </li>
-
             }
         </ul>
        

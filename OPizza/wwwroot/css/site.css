@@ -80,20 +80,6 @@ body {
     transition: background .6s;
 }
 
-/* closing animation */
-#active:checked + .menu-btn span {
-    transform: scaleX(0);
-}
-
-#active:checked + .menu-btn:before {
-    transform: rotate(45deg);
-    border-color: #fff;
-}
-
-#active:checked + .menu-btn:after {
-    transform: rotate(-45deg);
-    border-color: #fff;
-}
 
 .wrapper ul {
     position: absolute;

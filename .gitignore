@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+OPizza/wwwroot/css/userForm.css
+OPizza/wwwroot/css/home.css
+OPizza/wwwroot/css/home.css
+OPizza/wwwroot/css/customV2.css
