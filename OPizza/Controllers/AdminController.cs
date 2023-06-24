@@ -31,7 +31,7 @@ namespace OPizza.Controllers
 
 
 
-        private readonly string _connectionString = "Server=tcp:opizzadbserver.database.windows.net,1433;Initial Catalog=OPizza_db;Persist Security Info=False;User ID=opizzaowner;Password=1Admin1@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private readonly string _connectionString = "Data Source=.\\sqlexpress;Initial Catalog=OPizza;Integrated Security=True;Trust Server Certificate=True";
         private readonly string query = "SELECT id, PizzaName, TomatoSauce, Ham, Pepperoni,Data, Mushrooms, Olives,Pineapple,Anchovies,Bacon,CheeseType,GreenPeppers,Jalapenos,Onions,Description, FinalPrice FROM Pizzas";
         public async Task<IActionResult> Index()
         {
