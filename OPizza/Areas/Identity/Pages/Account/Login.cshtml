@@ -51,6 +51,7 @@
                     <input class="form-check-input" asp-for="Input.RememberMe" />
                     @Html.DisplayNameFor(m => m.Input.RememberMe)
                 </label>
+               
             </div>
 
             <input type="submit" class="button" value="Login">
@@ -64,8 +65,12 @@
 
         </form>
         <div class="signup">
+            
             <span class="signup">Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" onclick="toggleForms()">Signup</a></span>
+            <hr />
+            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
         </div>
+        
     </div>
 </div>
 
