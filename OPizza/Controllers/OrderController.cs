@@ -4,67 +4,78 @@ using OPizza.Context;
 using OPizza.Data;
 using OPizza.Models;
 using Microsoft.AspNetCore.Identity;
-
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace OPizza.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly OrderDbContext _context;
-        private readonly PizzaDbContext _Context;
+        Uri baseAddress = new Uri("http://localhost:5132");
+        private readonly HttpClient _client;
+
         private readonly UserManager<IdentityUser> _userManager;
 
-        public OrderController(OrderDbContext context, PizzaDbContext context1 , UserManager<IdentityUser> userManager)
+        public OrderController(UserManager<IdentityUser> userManager)
         {
-            _context = context;
-            _Context = context1;
+            _client = new HttpClient();
+            _client.BaseAddress = baseAddress;
             _userManager = userManager;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(int id)
         {
-            Pizza pizza = _Context.Pizzas.Find(id);
-
-            if (pizza == null)
+            var response = await _client.GetAsync($"/api/Pizza/{id}");
+            if (response.IsSuccessStatusCode)
             {
-                // Handle the case where the pizza with the specified ID was not found
-                return NotFound();
+                var data = await response.Content.ReadAsStringAsync();
+                var pizza = JsonConvert.DeserializeObject<PizzaAPI>(data);
+
+
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+
+                string userId = user.Id;
+                string userName = user.UserName;
+
+                var newOrder = new OrderModel
+                {
+                    UserId = userId,
+                    UserName = userName,
+                    PizzaName = pizza.PizzaName,
+                    FinalPrice = pizza.FinalPrice,
+                    TomatoSauce = pizza.TomatoSauce,
+                    Ham = pizza.Ham,
+                    Pepperoni = pizza.Pepperoni,
+                    Mushrooms = pizza.Mushrooms,
+                    Olives = pizza.Olives,
+                    CheeseType = pizza.CheeseType,
+                    Bacon = pizza.Bacon,
+                    Onions = pizza.Onions,
+                    GreenPeppers = pizza.GreenPeppers,
+                    Pineapple = pizza.Pineapple,
+                    Jalapenos = pizza.Jalapenos,
+                    Anchovies = pizza.Anchovies,
+
+                    OrderDate = DateTime.Now
+                };
+                var responseUpload = await _client.PostAsJsonAsync($"/api/Order", newOrder);
+                if (responseUpload.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    var error = await responseUpload.Content.ReadAsStringAsync();
+                    return BadRequest(error);
+                }
             }
-
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            string userId = user.Id;
-            string userName = user.UserName;
-            
-
-            var newOrder = new OrderModel
+            else
             {
-                UserId = userId,
-                UserName = userName,
-                PizzaName = pizza.PizzaName,
-                FinalPrice = pizza.FinalPrice,
-                TomatoSauce = pizza.TomatoSauce,
-                Ham = pizza.Ham,
-                Pepperoni = pizza.Pepperoni,
-                Mushrooms = pizza.Mushrooms,
-                Olives = pizza.Olives,
-                CheeseType = pizza.CheeseType,
-                Bacon = pizza.Bacon,
-                Onions = pizza.Onions,
-                GreenPeppers = pizza.GreenPeppers,
-                Pineapple = pizza.Pineapple,
-                Jalapenos = pizza.Jalapenos,
-                Anchovies = pizza.Anchovies,
-
-                OrderDate = DateTime.Now
-            };
-
-            _context.Orders.Add(newOrder);
-            _context.SaveChanges();
-
-
-            return RedirectToAction("Index", "Home");
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
+            
         }
 
        
@@ -99,10 +110,16 @@ namespace OPizza.Controllers
                 OrderDate = DateTime.Now
             };
 
-            _context.Orders.Add(newOrder);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index", "Home");
+            var response = await _client.PostAsJsonAsync($"/api/Order", newOrder);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
 
 
@@ -138,10 +155,16 @@ namespace OPizza.Controllers
                 OrderDate = DateTime.Now
             };
 
-            _context.Orders.Add(newOrder);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index", "Home");
+            var response = await _client.PostAsJsonAsync($"/api/Order", newOrder);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
 
     }

@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO.Pipes;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace OPizza.Controllers
@@ -28,7 +29,6 @@ namespace OPizza.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         public AdminController(OrderDbContext orderDb, UserManager<IdentityUser> userManager)
         {
-            this._OrderDb = orderDb;
             this._userManager = userManager;
 
             _client = new HttpClient();
@@ -264,29 +264,46 @@ namespace OPizza.Controllers
 
 
 
+        //Orders Seciton
         [HttpGet]
-        public IActionResult Orders()
+        public async Task<IActionResult> Orders()
         {
             var users = _userManager.Users.ToList();
-            var orders = _OrderDb.Orders.ToList();
 
-            var viewModel = new List<OrderViewModel>
+            var response = await _client.GetAsync("/api/Order");
+
+            if (response.IsSuccessStatusCode)
             {
-                new OrderViewModel
-                {
-                   Orders = orders,
-                    Users = users
-                }
-            };
+                string data = await response.Content.ReadAsStringAsync();
+                var orders = JsonConvert.DeserializeObject<List<OrderModel>>(data);
 
-            return View(viewModel);
+                var viewModel = new List<OrderViewModel>()
+                {
+                    new OrderViewModel
+                    {
+                        Orders = orders,
+                        Users = users
+                    }
+                };
+                return View(viewModel);
+
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
+
         }
         [HttpGet]
         public async Task<IActionResult> View(int id)
         {
-            var order = await _OrderDb.Orders.FindAsync(id);
-            if (order != null)
+            var response = await _client.GetAsync($"/api/Order/{id}");
+            if (response.IsSuccessStatusCode)
             {
+                string data = await response.Content.ReadAsStringAsync();
+                var order = JsonConvert.DeserializeObject<OrderModel>(data);
+
                 var user = await _userManager.FindByIdAsync(order.UserId);
                 var model = new OrderViewModel
                 {
@@ -296,23 +313,27 @@ namespace OPizza.Controllers
                 return View(model);
 
             }
-            return RedirectToAction("Orders");
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
 
-
-
         [HttpGet]
-        public IActionResult  Delete(int Id)
+        public async Task<IActionResult>  Delete(int Id)
         {
-            var order = _OrderDb.Orders.Find(Id);
-            if (order != null)
-            {
-                _OrderDb.Orders.Remove(order);
-                _OrderDb.SaveChanges();
+            var response = await _client.DeleteAsync($"/api/Order/{Id}");
 
+            if (response.IsSuccessStatusCode)
+            {
                 return RedirectToAction("Orders");
             }
-            return RedirectToAction("Orders");
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
     }
 }
