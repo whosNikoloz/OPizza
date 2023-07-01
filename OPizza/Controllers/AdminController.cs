@@ -2,111 +2,82 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using NuGet.Versioning;
 using OPizza.Context;
 using OPizza.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.IO.Pipes;
 using System.Linq;
+using System.Text;
 
 namespace OPizza.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        Uri baseAddress = new Uri("http://localhost:5132");
+        private readonly HttpClient _client;
 
 
         private readonly OrderDbContext _OrderDb;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly PizzaDbContext db;
-        public AdminController(PizzaDbContext db, OrderDbContext orderDb, UserManager<IdentityUser> userManager)
+        public AdminController(OrderDbContext orderDb, UserManager<IdentityUser> userManager)
         {
-            this.db = db; 
             this._OrderDb = orderDb;
             this._userManager = userManager;
+
+            _client = new HttpClient();
+            _client.BaseAddress = baseAddress;
         }
 
 
-
-
-
-        private readonly string _connectionString = "Data Source=.\\sqlexpress;Initial Catalog=OPizza;Integrated Security=True;Trust Server Certificate=True";
-        private readonly string query = "SELECT id, PizzaName, TomatoSauce, Ham, Pepperoni,Data, Mushrooms, Olives,Pineapple,Anchovies,Bacon,CheeseType,GreenPeppers,Jalapenos,Onions,Description, FinalPrice FROM Pizzas";
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            PizzaViewModel viewModel = new PizzaViewModel();
-            var pizzas = await GetAllPizzasAsync();
-            viewModel.Pizzas = pizzas != null ? pizzas : new List<Pizza>();
+            var viewModel = new PizzaViewModel();
+            var Model = new List<Pizza>();
+
+            var response = await _client.GetAsync("/api/Pizza");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                var pizzas = JsonConvert.DeserializeObject<List<PizzaAPI>>(data);
+
+                foreach (var pizza in pizzas)
+                {
+                    var pizaModel = new Pizza(); // Create a new instance for each pizza item
+
+                    pizaModel.Id = pizza.Id;
+                    pizaModel.Description = pizza.Description;
+                    pizaModel.CheeseType = pizza.CheeseType;
+                    pizaModel.Bacon = pizza.Bacon;
+                    pizaModel.Onions = pizza.Onions;
+                    pizaModel.GreenPeppers = pizza.GreenPeppers;
+                    pizaModel.Pineapple = pizza.Pineapple;
+                    pizaModel.Jalapenos = pizza.Jalapenos;
+                    pizaModel.Anchovies = pizza.Anchovies;
+                    pizaModel.Data = Convert.FromBase64String(pizza.Data);
+                    pizaModel.FinalPrice = pizza.FinalPrice;
+                    pizaModel.PizzaName = pizza.PizzaName;
+                    pizaModel.TomatoSauce = pizza.TomatoSauce;
+                    pizaModel.Ham = pizza.Ham;
+                    pizaModel.Pepperoni = pizza.Pepperoni;
+                    pizaModel.Mushrooms = pizza.Mushrooms;
+
+                    Model.Add(pizaModel);
+                }
+
+                viewModel.Pizzas = Model;
+            }
+
             return View(viewModel);
         }
-
-        private async Task<byte[]> GetBytesAsync(SqlDataReader reader, int ordinal)
-        {
-            const int bufferSize = 4096;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                byte[] buffer = new byte[bufferSize];
-                long bytesRead;
-                long fieldOffset = 0;
-
-                // Start a separate thread/task to read the bytes asynchronously
-                await Task.Run(() =>
-                {
-                    while ((bytesRead = reader.GetBytes(ordinal, fieldOffset, buffer, 0, bufferSize)) > 0)
-                    {
-                        stream.Write(buffer, 0, (int)bytesRead);
-                        fieldOffset += bytesRead;
-                    }
-                });
-
-                return stream.ToArray();
-            }
-        }
-        private async Task<List<Pizza>> GetAllPizzasAsync()
-        {
-            List<Pizza> pizzas = new List<Pizza>();
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.CommandTimeout = 120;
-
-                await connection.OpenAsync();
-
-                using (SqlDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        Pizza pizza = new Pizza();
-
-                        pizza.Id = reader.GetInt32(reader.GetOrdinal("id"));
-                        pizza.PizzaName = reader.GetString(reader.GetOrdinal("PizzaName"));
-                        pizza.Description = reader.GetString(reader.GetOrdinal("Description"));
-                        pizza.CheeseType = reader.GetString(reader.GetOrdinal("CheeseType"));
-                        pizza.Pineapple = reader.GetBoolean(reader.GetOrdinal("Pineapple"));
-                        pizza.TomatoSauce = reader.GetBoolean(reader.GetOrdinal("TomatoSauce"));
-                        pizza.Anchovies = reader.GetBoolean(reader.GetOrdinal("Anchovies"));
-                        pizza.Jalapenos = reader.GetBoolean(reader.GetOrdinal("Jalapenos"));
-                        pizza.Onions = reader.GetBoolean(reader.GetOrdinal("Onions"));
-                        pizza.GreenPeppers = reader.GetBoolean(reader.GetOrdinal("GreenPeppers"));
-                        pizza.Bacon = reader.GetBoolean(reader.GetOrdinal("Bacon"));
-                        pizza.Pepperoni = reader.GetBoolean(reader.GetOrdinal("Pepperoni"));
-                        pizza.Ham = reader.GetBoolean(reader.GetOrdinal("Ham"));
-                        pizza.Mushrooms = reader.GetBoolean(reader.GetOrdinal("Mushrooms"));
-                        pizza.Olives = reader.GetBoolean(reader.GetOrdinal("Olives"));
-                        pizza.FinalPrice = reader.GetDecimal(reader.GetOrdinal("FinalPrice"));
-                        pizza.Data = await GetBytesAsync(reader, reader.GetOrdinal("Data"));
-
-                        pizzas.Add(pizza);
-                    }
-                }
-            }
-
-            return pizzas;
-        }
-
-
 
 
 
@@ -115,6 +86,8 @@ namespace OPizza.Controllers
 
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddPizza(IFormFile image, Pizza custom, string cheese)
         {
@@ -123,8 +96,10 @@ namespace OPizza.Controllers
             await image.CopyToAsync(stream);
             var imageData = stream.ToArray();
 
+            var imageDataString = Convert.ToBase64String(imageData);
+
             // Create a new ImageModel instance
-            var model = new Pizza
+            var model = new PizzaAPI
             {
                 Description = custom.Description,
                 CheeseType = cheese,
@@ -134,61 +109,93 @@ namespace OPizza.Controllers
                 Pineapple = custom.Pineapple,
                 Jalapenos = custom.Jalapenos,
                 Anchovies = custom.Anchovies,
-                Data = imageData,
+                Data = imageDataString,
                 FinalPrice = custom.FinalPrice,
                 PizzaName = custom.PizzaName,
                 TomatoSauce = custom.TomatoSauce,
                 Ham = custom.Ham,
                 Pepperoni = custom.Pepperoni,
                 Mushrooms = custom.Mushrooms,
-
             };
 
-            // Save the image data to SQL Server
-            db.Pizzas.Add(model);
-            await db.SaveChangesAsync();
+            // Send the Pizza data to the API endpoint
 
-            // Save the image to the wwwroot/images folder
-            //var filePath = Path.Combine("wwwroot", "images","Pizzas", image.FileName);
-            //await System.IO.File.WriteAllBytesAsync(filePath, imageData);
+            var response = await _client.PostAsJsonAsync("/api/Pizza", model);
 
-            return RedirectToAction("Index", "admin");
+            if (response.IsSuccessStatusCode)
+            {
+                // Handle successful response
+                var result = await response.Content.ReadFromJsonAsync<PizzaAPI>();
+                return RedirectToAction("Index", "admin");
+            }
+            else
+            {
+                // Handle error response
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Pizza pizza = db.Pizzas.Find(id);
 
-            var model = new Pizza
+            var response = await _client.GetAsync($"/api/Pizza/{id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                PizzaName = pizza.PizzaName,
-                Description = pizza.Description,
-                Bacon = pizza.Bacon,
-                Onions = pizza.Onions,
-                GreenPeppers = pizza.GreenPeppers,
-                Pineapple = pizza.Pineapple,
-                Jalapenos = pizza.Jalapenos,
-                Anchovies = pizza.Anchovies,
-                CheeseType = pizza.CheeseType,
-                FinalPrice = pizza.FinalPrice,
-                TomatoSauce = pizza.TomatoSauce,
-                Ham = pizza.Ham,
-                Pepperoni = pizza.Pepperoni,
-                Mushrooms = pizza.Mushrooms,
+                string data = await response.Content.ReadAsStringAsync();
+                var pizza = JsonConvert.DeserializeObject<PizzaAPI>(data);
 
-                Data = pizza.Data
-            };
-            return View(model);
+
+                var model = new Pizza
+                {
+
+                    Id = pizza.Id,
+                    PizzaName = pizza.PizzaName,
+                    Description = pizza.Description,
+                    Bacon = pizza.Bacon,
+                    Onions = pizza.Onions,
+                    GreenPeppers = pizza.GreenPeppers,
+                    Pineapple = pizza.Pineapple,
+                    Jalapenos = pizza.Jalapenos,
+                    Anchovies = pizza.Anchovies,
+                    CheeseType = pizza.CheeseType,
+                    FinalPrice = pizza.FinalPrice,
+                    TomatoSauce = pizza.TomatoSauce,
+                    Ham = pizza.Ham,
+                    Pepperoni = pizza.Pepperoni,
+                    Mushrooms = pizza.Mushrooms,
+
+                    Data = Convert.FromBase64String(pizza.Data),
+                };
+
+                return View(model);
+            }
+            else
+            {
+                // Handle error response
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
+
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(Pizza model)
         {
+            var response = await _client.GetAsync($"/api/Pizza/{model.Id}");
 
-            var pizza = await db.Pizzas.FindAsync(model.Id);
-            if (pizza != null)
+
+            if (response.IsSuccessStatusCode)
             {
+
+                string data = await response.Content.ReadAsStringAsync();
+                var pizza = JsonConvert.DeserializeObject<PizzaAPI>(data);
+
+
+                pizza.Id = model.Id;
+                pizza.PizzaName = model.PizzaName;
                 pizza.Description = model.Description;
                 pizza.Bacon = model.Bacon;
                 pizza.Onions = model.Onions;
@@ -209,14 +216,30 @@ namespace OPizza.Controllers
                 pizza.Ham = model.Ham;
                 pizza.Pepperoni = model.Pepperoni;
                 pizza.Mushrooms = model.Mushrooms;
+                pizza.Data = Convert.ToBase64String(model.Data); ;
+
+                var responseUpdate = await _client.PostAsJsonAsync($"/api/Pizza/{pizza.Id}", pizza);
+
+                if (responseUpdate.IsSuccessStatusCode)
+                {
+                    var result = await responseUpdate.Content.ReadFromJsonAsync<PizzaAPI>();
+                    return RedirectToAction("Index", "admin");
+                }
+                else
+                {
+                    // Handle error response
+                    var error = await response.Content.ReadAsStringAsync();
+                    return BadRequest(error);
+                }
 
 
-                await db.SaveChangesAsync();
-
-                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
-
+            else
+            {
+                // Handle error response
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
 
 
@@ -224,19 +247,19 @@ namespace OPizza.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(Pizza model)
         {
-            var pizza = await db.Pizzas.FindAsync(model.Id);
-            if (pizza != null)
+
+            var response = await _client.DeleteAsync($"/api/Pizza/{model.Id}");
+
+            if (response.IsSuccessStatusCode)
             {
-                // delete the image file from the server
-
-                db.Pizzas.Remove(pizza);
-                await db.SaveChangesAsync();
-
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
         }
-
 
 
 

@@ -7,6 +7,15 @@ namespace OPizza.Controllers
 {
     public class CustomController : Controller
     {
+        Uri baseAddress = new Uri("http://localhost:5132");
+        private readonly HttpClient _client;
+
+        public CustomController()
+        {
+            _client = new HttpClient();
+            _client.BaseAddress = baseAddress;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -94,19 +103,49 @@ namespace OPizza.Controllers
             return RedirectToAction("Custom", "Checkout");
         }
 
-        private readonly PizzaDbContext _context;
-        public CustomController(PizzaDbContext context)
-        {
-            _context = context;
-        }
-
-
+        
 
         [HttpPost]
-        public IActionResult EditPizza(int id)
+        public async Task<IActionResult> EditPizza(int id)
         {
-            Pizza pizza = _context.Pizzas.Find(id);
-            return View(pizza);
+            var response = await _client.GetAsync($"/api/Pizza/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                var pizza = JsonConvert.DeserializeObject<PizzaAPI>(data);
+
+
+                var model = new Pizza
+                {
+
+                    Id = pizza.Id,
+                    PizzaName = pizza.PizzaName,
+                    Description = pizza.Description,
+                    Bacon = pizza.Bacon,
+                    Onions = pizza.Onions,
+                    GreenPeppers = pizza.GreenPeppers,
+                    Pineapple = pizza.Pineapple,
+                    Jalapenos = pizza.Jalapenos,
+                    Anchovies = pizza.Anchovies,
+                    CheeseType = pizza.CheeseType,
+                    FinalPrice = pizza.FinalPrice,
+                    TomatoSauce = pizza.TomatoSauce,
+                    Ham = pizza.Ham,
+                    Pepperoni = pizza.Pepperoni,
+                    Mushrooms = pizza.Mushrooms,
+
+                    Data = Convert.FromBase64String(pizza.Data),
+                };
+
+                return View(model);
+            }
+            else
+            {
+                // Handle error response
+                var error = await response.Content.ReadAsStringAsync();
+                return BadRequest(error);
+            }
 
         }
 
