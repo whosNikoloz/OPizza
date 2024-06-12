@@ -58,5 +58,4 @@ Include licensing information for your project. Mention the type of license your
 
 ---
 
-Feel free to customize and expand upon the sections as needed to best represent your project. Good luck with your OPizza project!
 
