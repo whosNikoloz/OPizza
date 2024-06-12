@@ -46,7 +46,7 @@ Describe the admin panel functionality. Highlight tasks that administrators can 
 
 ## API - OPizzaAPI
 
-If applicable, provide information about the API (OPizzaAPI) associated with the project. Explain how to use the API, including endpoints and their purposes.
+If applicable, provide information about the API (OPizzaAPI) [APIDocumentation](https://github.com/whosNikoloz/OPizzaAPI.git) associated with the project. Explain how to use the API, including endpoints and their purposes.
 
 ## Contributing
 
